@@ -4,12 +4,13 @@ RM = rm -rf
 
 ifeq ($(OS),Windows_NT)
   RM = del /q /f
+  LIBS += -lws2_32
 else
   UNAME_S := $(shell uname -s)
   DLL_FLAGS += -shared
 
   ifeq ($(UNAME_S),Linux)
-    CFLAGS += -ldl
+    LIBS += -ldl
   endif
 
   ifeq ($(UNAME_S),Darwin)
@@ -19,13 +20,13 @@ else
 endif
 
 all: websocket_html.c
-	$(CC) hello.c ../mongoose.c  -o hello $(CFLAGS)
-	$(CC) websocket.c websocket_html.c ../mongoose.c  -o websocket $(CFLAGS)
-	$(CC) post.c ../mongoose.c -o post $(CFLAGS)
-	$(CC) multi_threaded.c ../mongoose.c -o multi_threaded $(CFLAGS)
-	$(CC) upload.c ../mongoose.c -o upload $(CFLAGS)
-	$(CC) auth.c ../mongoose.c -o auth $(CFLAGS)
-	$(CC) server.c ../mongoose.c -o server $(CFLAGS)
+	$(CC) hello.c ../mongoose.c  -o hello $(CFLAGS) $(LIBS)
+	$(CC) websocket.c websocket_html.c ../mongoose.c  -o websocket $(CFLAGS) $(LIBS)
+	$(CC) post.c ../mongoose.c -o post $(CFLAGS) $(LIBS)
+	$(CC) multi_threaded.c ../mongoose.c -o multi_threaded $(CFLAGS) $(LIBS)
+	$(CC) upload.c ../mongoose.c -o upload $(CFLAGS) $(LIBS)
+	$(CC) auth.c ../mongoose.c -o auth $(CFLAGS) $(LIBS)
+	$(CC) server.c ../mongoose.c -o server $(CFLAGS) $(LIBS)
 
 #	$(CC) chat.c ../mongoose.c -o chat $(CFLAGS)
 #	$(CC) lua_dll.c ../build/lua_5.2.1.c -o $@.so $(CFLAGS) $(DLL_FLAGS)
